@@ -1,0 +1,34 @@
+###FUNCION PARA CONFIGURACION CON DHCP
+red(){ 
+echo "Por favor asegurese de tener su adaptador de red en NAT en su VirtualBox
+Presione ENTER para continuar"
+read NADA
+sed --in-place "12 c\iface enp0s3 inet dhcp" /etc/network/interfaces
+sed --in-place "12 a\##NADA" /etc/network/interfaces
+sed --in-place "12 a\##NADA" /etc/network/interfaces
+ifdown enp0s3
+ifup enp0s3
+echo "Configuracion de interface lista" 
+}
+
+##FUNCION PARA CONFIGURACION EN ESTATICA
+red2(){
+clear
+echo "Configuracion de la interface"
+echo "Inserte su direccion IP"
+read IPR
+echo "Inserte su mascara de RED"
+read MASK
+sed --in-place "12 c\iface enp0s3 inet static" /etc/network/interfaces
+sed --in-place "13 c\address $IPR " /etc/network/interfaces
+sed --in-place "14 c\netmask $MASK " /etc/network/interfaces
+echo "Configuracion de interface lista"
+echo "Se reiniciara el equipo. ENTER para continuar"
+read NADA
+sleep 1; echo "5"
+sleep 1; echo "4"
+sleep 1; echo "3"
+sleep 1; echo "2"
+sleep 1; echo "1"
+init 6
+}

@@ -1,0 +1,13 @@
+Date freebsd:  date AAMMDDHHMM
+
+date debian:
+fijar fecha; 	date --set AAAA-MM-DD
+fijar dia; 	date --set HH:MM:SS
+
+date linux= date --set="AAAAMMDD HHMM"
+
+Cambiar modo consola:
+Ctrl + Alt + (F2-F6)
+Regresar modo grafico:
+Ctrl + Alt + F7
+
