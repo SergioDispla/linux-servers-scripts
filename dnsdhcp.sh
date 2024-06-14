@@ -1,13 +1,13 @@
-#!/bind/bash
+#!/bin/bash
 
 clear
-A=`dpkg --get-selections | grep "bind9[^-*]" | wc -l`
-B=`dpkg --get-selections | grep "isc-dhcp-server" | wc -l`
+A=$(dpkg --get-selections | grep "bind9[^-*]" | wc -l)
+B=$(dpkg --get-selections | grep "isc-dhcp-server" | wc -l)
 
-##FUNCION PARA CONFIGURACION CON DHCP
+##FUNCTION FOR DHCP CONFIGURATION
 red(){ 
-echo "Por favor asegurese de tener su adaptador de red en NAT en su VirtualBox
-Presione ENTER para continuar"
+echo "Please ensure your network adapter is set to NAT in your VirtualBox.
+Press ENTER to continue"
 read NADA
 sed --in-place "5 c\#NADA" /etc/apt/sources.list
 echo "source /etc/network/interfaces.d/*\n
@@ -17,19 +17,19 @@ allow-hotplug eth0
 iface eth0 inet dhcp" > /etc/network/interfaces
 ifdown eth0
 ifup eth0 
-echo "Configuracion de interface lista" 
+echo "Interface configuration complete" 
 }
 
-##FUNCION PARA CONFIGURACION EN ESTATICA
+##FUNCTION FOR STATIC CONFIGURATION
 red2(){
-echo "Por favor cambie el adaptador de red a Red Interna en su VirtualBox
-Presione ENTER para continuar"
+echo "Please change the network adapter to Internal Network in your VirtualBox.
+Press ENTER to continue"
 read NADA
-echo "Inserte su direccion IP"
+echo "Enter your IP address"
 read IP
-echo "Inserte su mascara de RED"
+echo "Enter your subnet mask"
 read MASK
-echo "Digite su direccion de GATEWAY"
+echo "Enter your gateway address"
 read GAT
 echo "source /etc/network/interfaces.d/*\n
 auto lo
@@ -41,59 +41,59 @@ netmask $MASK
 gateway $GAT " > /etc/network/interfaces
 ifdown eth0
 ifup eth0 2> /dev/null
-echo "Configuracion de interface lista"
+echo "Interface configuration complete"
 }
 
 if [ $A != 2 ]
 then
-echo "Los paquetes bind9 y isc-dhcp-server no estan instalados"
-red ##CONFIGURA LA TARJETA PARA DHCP CON NAT
+echo "The bind9 and isc-dhcp-server packages are not installed."
+red ##CONFIGURE THE CARD FOR DHCP WITH NAT
 clear
 	if [ $B != 1 ]
 	then 
 	apt-get -y install bind9 bind9utils isc-dhcp-server
-	echo "Listo"
+	echo "Ready"
 	else
 	apt-get -y install bind9 bind9utils
-	echo "Listo"
+	echo "Ready"
 	fi
 clear
-red2 #CONFIGURA LA TARJETA DE RED EN ESTATICA
+red2 #CONFIGURE THE NETWORK CARD FOR STATIC
 
 else
 	if [ $B != 1 ]
 	then
-	echo "Paquete isc-dhcp-server no instalado"
-	red #CONFIGURA LA TARJETA PARA DHCP CON NAT
+	echo "Package isc-dhcp-server not installed."
+	red #CONFIGURE THE CARD FOR DHCP WITH NAT
 	apt-get -y install isc-dhcp-server
 	fi 
 clear
-echo "Paquetes Bind9 y isc-dhcp-server instalados"
-red2 #CONFIGURA LA TARJETA DE RED EN ESTATICA 
+echo "Bind9 and isc-dhcp-server packages installed."
+red2 #CONFIGURE THE NETWORK CARD FOR STATIC 
 fi
 
 clear
-echo "Ingrese el nombre de su dominio DNS (Example: midominio.com)"
+echo "Enter your DNS domain name (Example: mydomain.com)"
 read DOM
-##FICHERO HOSTS
-echo "Trabajando en el fichero hosts"
+##HOSTS FILE
+echo "Working on the hosts file"
 sed --in-place "2 c\127.0.1.1	`hostname`.$DOM 	`hostname`" /etc/hosts
 sed --in-place "3 c\ $IP	`hostname`.$DOM 	`hostname`" /etc/hosts
 sed --in-place "3 a\ " /etc/hosts
 
-##FICHERO HOST.CONF
-echo "Trabajando en el fichero host.conf"
+##HOST.CONF FILE
+echo "Working on the host.conf file"
 echo "order bind,hosts 
 multi on" > /etc/host.conf
 
-##FICHERO RESOLV.CONF
-echo "Trabajando en el fichero resolv.conf"
+##RESOLV.CONF FILE
+echo "Working on the resolv.conf file"
 echo "domain $DOM
 search $DOM
 nameserver $IP" > /etc/resolv.conf
 
-#FICHEROS BIND
-echo "Trabajando en bind"
+#BIND FILES
+echo "Working on bind"
 cd /etc/ ; chown bind:bind bind ; cd bind
 cp db.local db.$DOM
 cp db.127 db.$IP
@@ -109,16 +109,16 @@ echo "controls {
 	inet 127.0.0.1 port 953 
 	allow { 127.0.0.1; } keys { \"rndc-key\"; };
 }; " >> named.conf
-echo "named.conf listo"
+echo "named.conf ready"
 
 #named.conf.options
 sed --in-place "2 c\		directory \"/etc/bind\"; " /etc/bind/named.conf.options
-echo "named.conf.options listo"
+echo "named.conf.options ready"
 
 #named.conf.local
-X=`echo $IP | cut -d. -f1`
-Y=`echo $IP | cut -d. -f2`
-Z=`echo $IP | cut -d. -f3`
+X=$(echo $IP | cut -d. -f1)
+Y=$(echo $IP | cut -d. -f2)
+Z=$(echo $IP | cut -d. -f3)
 INV=$Z.$Y.$X
 echo "zone \"$DOM\" {
 	type master;
@@ -133,7 +133,7 @@ zone \"$INV.in-addr.arpa\" {
 	allow-update { key \"rndc-key\"; };
 	notify yes;
 };" > /etc/bind/named.conf.local
-echo "named.conf.local listo"
+echo "named.conf.local ready"
 
 #db.zonaprimaria
 echo > /etc/bind/db.$DOM
@@ -150,10 +150,10 @@ $DOM	IN	SOA	`hostname`.$DOM. root.$DOM. (
 		NS	`hostname`.$DOM.
 \$ORIGIN		$DOM.
 `hostname`	A	$IP" > /etc/bind/db.$DOM
-echo "Zona primaria lista"
+echo "Primary zone ready"
 
 #db.zonainversa
-IPV2=`echo $IP | cut -d. -f4`
+IPV2=$(echo $IP | cut -d. -f4)
 echo > /etc/bind/db.$IP
 echo "\$ORIGIN	.
 \$TTL	86400
@@ -167,37 +167,37 @@ $INV.in-addr.arpa	IN	SOA	`hostname`.$DOM. root.$DOM. (
 		NS	`hostname`.$DOM.
 \$ORIGIN		$INV.in-addr.arpa.
 $IPV2		PTR	`hostname`.$DOM." > /etc/bind/db.$IP
-echo "Zona inversa lista"
+echo "Reverse zone ready"
 
 clear
-#comprobacion
-echo "Comprobando los ficheros"
+#verification
+echo "Checking files"
 named-checkconf
-echo "named.conf listo"
+echo "named.conf ready"
 named-checkconf named.conf.local
-echo "named.conf.local listo"
+echo "named.conf.local ready"
 named-checkconf named.conf.options
-echo "named.conf.options listo"
+echo "named.conf.options ready"
 named-checkzone $DOM db.$DOM
 echo "checkzone $DOM"
 named-checkzone $INV.in-addr.arpa. db.$IP
 /etc/init.d/bind9 restart
-echo "SERVICIO DNS COMPLETADO"
+echo "DNS SERVICE COMPLETED"
 
 #DHCP
-echo "Trabajando en DHCP"
+echo "Working on DHCP"
 echo > /etc/default/isc-dhcp-server 
 echo "INTERFACES=\"eth0\" " > /etc/default/isc-dhcp-server
 RANGE=$X.$Y.$Z
 cd ; cd /etc/dhcp/
 clear
-echo "Ingrese el rango de su servidor DHCP"
-echo "IP Inicial"
+echo "Enter the range for your DHCP server"
+echo "Initial IP"
 read RANG2
-echo "Rango $RANG2 - "
-echo "IP Final"
+echo "Range $RANG2 - "
+echo "Final IP"
 read RANG3
-echo "Rango $RANG2 - $RANG3"
+echo "Range $RANG2 - $RANG3"
 echo > dhcpd.conf
 
 echo "server-identifier	$IP;
@@ -232,8 +232,7 @@ subnet $RANGE.0 netmask $MASK {
 	option broadcast-address $RANGE.255;
 }" > dhcpd.conf
 cd
-echo "dhcpd.conf listo"
+echo "dhcpd.conf ready"
 /etc/init.d/bind9 restart
 /etc/init.d/isc-dhcp-server restart
-echo "SERVICIO DHCP COMPLETADO"
-
+echo "DHCP SERVICE COMPLETED"
