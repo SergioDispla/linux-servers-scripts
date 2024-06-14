@@ -1,112 +1,86 @@
 # linux-servers-scripts
 Hi All, Here you can find scripts for installing services like Apache, Postfix, FTP on Linux OS (specially designed for Debian 8.X)
 
-Please translate to English:
+### IMPORTANT NOTE: IT IS RECOMMENDED TO RUN AN APT-GET UPDATE BEFORE EXECUTING THE SCRIPT TO HAVE THE REPOSITORIES UPDATED. IT IS ALSO IMPORTANT TO HAVE THE MANUAL AT HAND TO CORRECTLY FOLLOW THE INSTALLATION OF THE SERVICE IN QUESTION.
 
-Guia for Dummies:v
-NOTA IMPORTANTE: ES RECOMENDABLE REALIZAR UN APT-GET UPDATE ANTES DE EJECUTAR EL SCRIPT PARA TENER LOS REPOSITORIOS ACTUALIZADOS
-TAMBIEN ES IMPORTANTE TENER EL MANUAL A MANO PARA SEGUIR CORRECTAMENTE LA INSTALACION DEL
-SERVICIO EN CUESTION 
+- **addLinuxToSamba**: For clients, especially those with a Linux graphical interface, this script adds a Linux client to the sambaPDC domain. Requirements: Clean Linux machine in NAT, and having an internal DHCP server (PDC).
 
-addLinuxToSamba: Para clientes especialmente con interfaz grafica de linux, este script agrega un cliente linux al dominio sambaPDC. Requisitos: Maquina Limpia Linux y en NAT, ademas de contar con un servidor DHCP interno(PDC).
+- **addProxyToLinux**: Configures the proxy on a Linux/Debian client, so that it remains as system configuration. Requirements: Linux OS machine without UI.
 
-addProxyToLinux: Configura el proxy en un cliente linux/debian, de modo que queda como configuracion del sistema. Requisitos: Maquina SO Linux sin UI.
+- **addServersToBind**: Used to add the IP addresses of your static servers to DNS records (forward and reverse zones) in the db files. Various types of servers are included. Requirements: Execute it on a DNS server.
 
-addServersToBind: Funciona para agregar en los registros del DNS, las IPs de sus servidores estaticos (zona directa e inversa) esto, en los ficheros db.
-Se incluyen varios tipos de servidores. Requisitos: Ejecutarlo en un server DNS
+- **addSNMPtoLinux**: Script to configure an SNMP client for monitoring. Requirements: Debian machine (With or Without Interface), Ubuntu Server 14. NAT network adapter.
 
-addSNMPtoLinux: Script para configurar un cliente SNMP, para poder ser monitoreado.
-Requisitos: Maquina Debian (Con o Sin Interfaz), Ubuntu Server 14. Adaptador de red NAT
+- **apache**: Handles the entire installation and configuration of the Apache server. Includes: SSL, User Authentication.
 
-apache: Realiza toda la instalacion y configuracion del servidor apache.
-Incluye: SSL, Autenticacion de usuarios.
+- **bacula.sh**: Installs and configures the Bacula service. Requirements: Clean Debian machine, NAT on adapter 1. Note: Local copies are stored in "/copies".
 
-bacula.sh: Instala y configura el servicio de bacula.
-Requisitos: Maquina Debian Limpia, adaptador 1 en NAT
-Nota: Las copias locales se almacenan en "/copias"
+- **cacti**: Installs and configures the Cacti monitoring service. Requirements: Clean Ubuntu Server 14 machine, NAT or Bridged network adapter. See Nagios info in the Security/MonitoringManagement folder.
 
-cacti: Instala y configura el servicio de monitoreo de cacti
-Requisitos: Maquina Ubuntu Server 14, Limpia, adaptador de red en NAT o Puente
-Ver Info de Nagios en la carpeta de Seguridad/GestionMonitoreo.
+- **dnsdhcp**: Configures DNS/DHCP. Requirements: Clean machine.
 
-dnsdhcp: Configura DNS/DHCP. Requisitos: Maquina Limpia
+- **dhcp**: Installs and configures only the DHCP service (without DNS). Requirements: Clean machine, must have a separate DNS server already created.
 
-dhcp: Instala y configura unicamente el servicio de dhcp (sin DNS).
-Requisitos: Maquina Limpia, Tener ya creado un servidor DNS aparte.
+- **interfaceConf**: Saves time by editing the /etc/network/interfaces file to switch between DHCP or Static for the network card.
 
-interfaceConf: Funciona para ahorrar tiempo en editar el fichero /etc/network/interfaces, esto para cambiar ya sea la tarjeta a DHCP o Estatica.
+- **ldapclient**: Configures a Linux client to use the LDAP service. Requirements: 1. LDAP server already created. 2. Execute it on a clean Linux client.
 
-ldapclient: Configura un cliente linux para que pueda hacer uso del servicio de LDAP. Requisitos: 1.Tener ya creado el server ldap. 2.Ejecutarlo en un cliente linux limpio 
+- **ldapserver**: Installs and configures the LDAP server. Requirements: Clean Debian machine, Adapter 1 in NAT.
 
-ldapserver: Instala y configura el servidor LDAP. 
-Requisitos: Maquina Debian Limpia, Adaptador 1 en NAT
+- **mirrors**: Updates the /etc/apt/sources.list file to refresh the Debian mirrors.
 
-mirrors: Realiza un cambio del fichero /etc/apt/sources.list para actualizar
-los mirrors de Debian.
+- **mount**: Script to mount USB devices (FAT32, NTFS, EXFAT).
 
-mount: Script para montar dispositivos USB (FAT32, NTFS, EXFAT)
+- **mountShareWin**: Works to mount a shared Windows folder on a Linux client (UI).
 
-mountShareWin: Funciona para montar una carpeta compartida de windows en un cliente linux(UI).
+- **nagioSQL**: Installs and configures the Nagios monitoring server. See Nagios info in the Security/MonitoringManagement folder.
 
-nagioSQL: Instala y configura el servidor de monitoreo de Nagios.
-Ver Info de Nagios en la carpeta de Seguridad/GestionMonitoreo.
+- **nisClient**: Configures a Linux client to use the NIS server. Requirements: 1. NIS server already created. 2. Execute it on a Linux client.
 
-nisClient: Configura un cliente linux para hacer uso del servidor NIS. Requisitos: 1.Tener creado un server NIS 2. Ejecutarlo en un cliente linux
+- **nisServer**: Installs and configures the NIS server.
 
-nisServer: Instala y configura el servidor NIS.
+- **ocsServer**: Installs and configures the OCS Inventory server. See Nagios info in the Security/MonitoringManagement folder.
 
-ocsServer: Instala y configura el servidor ocsInventory.
-Ver Info de Nagios en la carpeta de Seguridad/GestionMonitoreo.
+- **ossecServer**: Installs and configures the OSSEC alert server. Requirements: Clean Ubuntu Server 16.04 machine, NAT network adapter.
 
-ossecServer: Instala y configura el servidor de alertas OSSEC
-Requisitos: Maquina Ubuntu Server 16.04 Limpia, Adaptador de Red NAT.
+- **ossecAgent**: Installs and configures an agent for monitoring with OSSEC. Requirements: Ubuntu Server or Desktop 14, Debian 8, NAT or Bridged network adapter.
 
-ossecAgent: Instala y configura un agente para poder ser monitoreado por Ossec
-Requisitos: Ubuntu Server o Desktop 14, Debian 8, Adaptador de red en NAT o Puente.
+- **postfixBasico**: Installs and configures the basic mail server, WITHOUT SSL. (This script complements postfixSSL).
 
-postfixBasico: Instala y configura el servidor de correo basico, SIN SSL. (Este script de complementa con el postfixSSL) 
+- **postfixSSL**: Adds SSL authentication to the mail. Requirements: 1. Basic mail configuration installed and configured (WITHOUT SSL or CLAMAV).
 
-postfixSSL: Agrega solo la autenticacion SSL al correo. Requisitos: 1. Tener instalado y configurado el correo con la configuracion basica (SIN SSL o CLAMAV).
+- **postfixClamav**: Under testing. Does not work.
 
-postfixClamav: en pruebas:v No funciona.
+- **postfix**: Installs and configures the mail server, with the option to add SSL authentication. Does NOT include Clamav/antivirus. Handles the entire installation in one go.
 
-postfix: Instala y configura el servidor de correo, con la opcion de agregar la autenticacion SSL. NO incluye Clamav/antivirus. Realiza la instalacion todo en 1
+- **prelude**: Script to install the Prelude alert server, Prelude-lml sensors, and Suricata. Requirements: Clean Ubuntu Server 14.04 machine, NAT or Bridged network adapter (Preferably Bridged). See info in the Security/Firewalls folder.
 
-prelude: Script para instalar el servidor de alertas Prelude, sensores prelude-lml y Suricata.
-Requisitos: Maquina Ubuntu Server 14.04, Limpia, Adaptador de red en NAT o Puente (Preferiblemente Puente) Ver info en carpeta Seguridad/Seguridad&Firewalls
+- **proFTPD**: Installs and configures a proFTPD server. Requirements: Debian machine, NAT network adapter.
 
-proFTPD: Instalacion y configuracion de un servidor proFTPD
-Requisitos: Maquina Debian, Adaptador de red NAT
+- **proxy**: Installs and configures the proxy server, with options to add user authentication, ACLs, Clamav. It's an all-in-one script. Requirements: Machine with 2 network interfaces. 1-NAT, 2-Internal Network.
 
-proxy: Instalacion y configuracion del servidor proxy, con la opcion de agregar autenticacion de usuarios, ACLs, Clamav. Es un script todo en 1.
-Requisitos: Maquina con 2 interfaces de red. 1-NAT,2-Red Interna
+- **proxyMenu**: Displays a menu for proxy installation. If you have already executed proxy.sh and missed any options (Authentication, ACL, Clamav), you can add that missing feature with this script, avoiding re-execution of proxy.sh and potential errors. Requirements: Same as proxy.sh.
 
-proxyMenu: Muestra un menu de instalacion de proxy, en caso de que ya haya ejecutado el proxy.sh, y no agrego alguna de las opciones(Autenticacion,ACL,Clamav), puede agregar esa caracteristica faltante con este script, evitando volver a ejecutar el proxy.sh y con esto evitar posibles errores. Requisitos: Igual que proxy.sh
+- **proxyTrans**: Installs and configures the proxy in transparent mode. Includes an option to add ACLs. Requirements are the same as proxy.sh.
 
-proxyTrans: Instala y configura el proxy en modo transparente. Incluye opcion para agregar ACLs. Requisitos igual que proxy.sh
+- **sambaPDC**: Installs and configures the Samba server, but only up to the step before restarting (see MontiManual). Verification after the restart must be done manually, as well as adding users. Requirements: Clean machine.
 
-sambaPDC: Instala y configura el servidor samba, no obstante llega hasta el paso antes del reinicio (ver MontiManual:v), la comprobacion despues del reinicio se debe hacer manualmente, al igual que agregar los usuarios. Requisitos: Maquina limpia
+- **sambaFINALPDC**: Fully installs and configures the Samba server, including a post-restart verification script. Option to add users to the PDC. Requirements: Clean machine. IMPORTANT: After the restart, /etc/init.d/sambaScript.sh must be executed to continue with the verification.
 
-sambaFINALPDC: Instala y configura el servidor samba completamente, incluye un script de comprobacion despues del reinicio. Opcion para agregar usuarios al PDC. Requisitos: Maquina limpia. IMPORTANTE: despues del reinicio se debe ejecutar /etc/init.d/sambaScript.sh para continuar con la comprobacion.
+- **sambaServer**: Installs and configures a Samba server, only works for sharing folders with Windows.
 
-sambaServer: Instala y configura un server samba, unicamente funciona para compartir carpetas con windows.
+- **snmp**: Installs and configures the SNMP service on Linux, to make it server-manageable. See SNMP Instructions file for more details. Requirements: Clean Ubuntu Server 16 or 14 machine (without graphical interface), NAT, 1 adapter.
 
-snmp: Instala y configura el servicio de SNMP en un Linux, para que este Server Manager. Ver Fichero Instrucciones SNMP para mas detalles.
-Requisitos: Maquina Ubuntu Server 16 o 14 (sin interfaz grafica), Limpia, 1 Adaptador en NAT
+- **snort_scripts**: Scripts to install a Snort server for intrusion detection. (BETA) Requirements: Clean Ubuntu Server 16 machine, NAT or Bridged network adapter.
 
-snort_scripts: Scripts para instalar servidor de Snort, deteccion de intrusos. (BETA)
-Requisitos: Maquina Ubuntu Server 16, Limpia, adaptador de red en NAT o Puente.
+- **ulteoAllOne**: Script to install the Ulteo server and Ulteo app server in one go. Requirements: Clean Ubuntu Server (14.04) machine, NAT on adapter 1.
 
-ulteoAllOne: Script para instalar el ulteo server y el ulteo app server en uno solo.
-Requisitos: Maquina Ubuntu Server (14.04) Limpia, adaptador 1 en NAT
+- **ulteoserver.sh**: Run on the machine that will be the main Ulteo server. Requirements: Clean Ubuntu Server (14.04) machine, NAT on adapter 1.
 
-ulteoserver.sh: Ejecutarlo en la maquina que sera el server principal de Ulteo. Requisitos: Maquina Ubuntu Server (14.04) Limpia, adaptador 1 en NAT.
+- **ulteoappserver.sh**: Run on the machine that will be the application server. Requirements: Clean Ubuntu Server (14.04) machine, NAT on adapter 1.
 
-ulteoappserver.sh: Ejecutarlo en la maquina que sera el servidor de aplicaciones. Requisitos: Maquina Ubuntu Server (14.04) Limpia adaptador 1 en NAT
+- **vpn**: Installs and configures the VPN server. Requirements: Machine with 2 network interfaces. 1-VPN, 2-Internal.
 
-vpn: Instala y configura el servidor VPN. Requisitos: Maquina con 2 interfaces de red. 1-VPN,2-Interna
+- **webhosting**: Installs and configures the web hosting server (similar to apache.sh), to access the website directory via SFTP.
 
-webhosting: Instala y configura el servidor webhosting (similar al apache.sh), para acceder via SFTP al directorio de la pagina web. 
-
-zenoss: Instala y configura el servidor de monitoreo de ZenOss.
-Ver Info de Nagios en la carpeta de Seguridad/GestionMonitoreo.
+- **zenoss**: Installs and configures the ZenOss monitoring server. See Nagios info in the Security/MonitoringManagement folder.
